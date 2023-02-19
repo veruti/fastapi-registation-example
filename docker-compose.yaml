@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:15.2-alpine3.17
+    environment:
+      POSTGRES_DB: "fast_api_registration"
+      POSTGRES_USER: "fast_api_registration_user"
+      POSTGRES_PASSWORD: "password"
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres-volume:/var/lib/postgresql
+
+    healthcheck:
+      test: pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 15s
+
+volumes:
+  postgres-volume:
